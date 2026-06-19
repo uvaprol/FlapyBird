@@ -1,0 +1,97 @@
+[gd_scene load_steps=13 format=3 uid="uid://dravy1qaeaqt2"]
+
+[ext_resource type="Texture2D" uid="uid://hngylc1v7e1i" path="res://sprites/bluebird-downflap.png" id="1_k3v35"]
+[ext_resource type="Texture2D" uid="uid://bkrissyaxl265" path="res://sprites/bluebird-midflap.png" id="2_6nk3w"]
+[ext_resource type="Texture2D" uid="uid://cjn8slp6sl3tn" path="res://sprites/bluebird-upflap.png" id="3_w265n"]
+[ext_resource type="Texture2D" uid="uid://cd767jfo1ogfy" path="res://sprites/redbird-downflap.png" id="4_l2t0q"]
+[ext_resource type="Texture2D" uid="uid://dpy14bx0bbtqy" path="res://sprites/redbird-midflap.png" id="5_vab2h"]
+[ext_resource type="Texture2D" uid="uid://d3nv8jo3ova5u" path="res://sprites/redbird-upflap.png" id="6_548is"]
+[ext_resource type="Texture2D" uid="uid://go8ukvp2wreq" path="res://sprites/yellowbird-downflap.png" id="7_f430k"]
+[ext_resource type="Texture2D" uid="uid://deji8wy0ca5xs" path="res://sprites/yellowbird-midflap.png" id="8_bn747"]
+[ext_resource type="Texture2D" uid="uid://ce1outcnpunnf" path="res://sprites/yellowbird-upflap.png" id="9_dd6dp"]
+
+[sub_resource type="GDScript" id="GDScript_vox6r"]
+script/source = "extends CharacterBody2D
+const JUMP_VELOCITY = -300.0
+const BIRDS = ['blue_bird', 'red_bird', 'yellow_bird']
+func _ready() -> void:
+	randomize()
+	$AnimatedSprite2D.play(BIRDS[randi_range(0, 2)])
+func _physics_process(delta: float) -> void:
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+		$AnimatedSprite2D.rotation_degrees = clamp(
+			$AnimatedSprite2D.rotation_degrees + 1, -30, 30)
+	if Input.is_action_just_pressed(\"jump\"):
+		velocity.y = JUMP_VELOCITY
+		$AnimatedSprite2D.rotation_degrees = -30
+	move_and_slide()
+"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_a7h38"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_k3v35")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_6nk3w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_w265n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_6nk3w")
+}],
+"loop": true,
+"name": &"blue_bird",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_l2t0q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_vab2h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_548is")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_vab2h")
+}],
+"loop": true,
+"name": &"red_bird",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_f430k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_bn747")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_dd6dp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_bn747")
+}],
+"loop": true,
+"name": &"yellow_bird",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_81qbw"]
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = SubResource("GDScript_vox6r")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+process_mode = 4
+sprite_frames = SubResource("SpriteFrames_a7h38")
+animation = &"yellow_bird"
+frame_progress = 0.5194372
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_81qbw")

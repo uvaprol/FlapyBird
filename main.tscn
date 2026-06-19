@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=3 uid="uid://bxpvxivkkp6ah"]
+
+[ext_resource type="PackedScene" uid="uid://dravy1qaeaqt2" path="res://bird.tscn" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://o6erk3frltg7" path="res://pipe.tscn" id="2_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://csid00orb8v1m" path="res://background_day.tscn" id="3_h2yge"]
+
+[sub_resource type="GDScript" id="GDScript_0xm2m"]
+script/source = "extends Node2D
+
+var game_over = false
+var score = 0
+
+ 
+func _ready() -> void:
+	randomize()
+	get_tree().paused = true
+
+
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed(\"jump\") and not game_over:
+		get_tree().paused = false
+	if game_over:
+		get_tree().paused = true
+		$CharacterBody2D.rotation_degrees = 30
+		$CharacterBody2D.position.y += 100 * delta
+
+
+func _on_timer_timeout() -> void:
+	var pipe: Area2D = preload(\"res://pipe.tscn\").instantiate()
+	pipe.position = Vector2(330.0, randi_range(-120, 150))
+	add_child(pipe)
+"
+
+[node name="Node2D" type="Node2D"]
+process_mode = 3
+script = SubResource("GDScript_0xm2m")
+
+[node name="Timer" type="Timer" parent="."]
+process_mode = 1
+wait_time = 2.0
+autostart = true
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("1_ig7tw")]
+process_mode = 1
+position = Vector2(18, 225)
+
+[node name="Area2D" parent="." instance=ExtResource("2_0xm2m")]
+position = Vector2(330, 50)
+
+[node name="BackgroundDay" parent="." instance=ExtResource("3_h2yge")]
+position = Vector2(125, 225.785)
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

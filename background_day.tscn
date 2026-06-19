@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://csid00orb8v1m"]
+
+[ext_resource type="Texture2D" uid="uid://l37a70eoqxrh" path="res://sprites/background-day.png" id="1_iay8h"]
+
+[sub_resource type="GDScript" id="GDScript_pnsaq"]
+script/source = "extends Sprite2D
+
+const SPEED = 100.0
+
+func _on_body_entered(_body: Node2D) -> void:
+	$'..'.game_over = true
+
+func _process(delta: float) -> void:
+	if position.x == -125:
+		queue_free()
+	if position.x <= 127:
+		var background = load(\"res://background_day.tscn\").instantiate()
+		background.position.y = 225.785
+		background.position.x = position.x + 249.0 - 127.0
+		$'..'.add_child(background)
+	position.x -= SPEED * delta
+"
+
+[node name="BackgroundDay" type="Sprite2D"]
+process_mode = 1
+position = Vector2(-129, 226)
+scale = Vector2(0.8819445, 0.8819445)
+texture = ExtResource("1_iay8h")
+script = SubResource("GDScript_pnsaq")

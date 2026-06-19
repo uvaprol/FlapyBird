@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://o6erk3frltg7"]
+
+[ext_resource type="Texture2D" uid="uid://ctxltgk27vmal" path="res://sprites/pipe-green.png" id="1_gf172"]
+
+[sub_resource type="GDScript" id="GDScript_gf172"]
+script/source = "extends Area2D
+
+const SPEED = 100.0
+var gate_key = true
+
+func _on_body_entered(_body: Node2D) -> void:
+	$'..'.game_over = true
+
+func _process(delta: float) -> void:
+	if position.x == -1000:
+		queue_free()
+	if position.x <= 0 and gate_key:
+		gate_key = false
+		$'..'.score += 1
+		print($'..'.score)
+	position.x -= SPEED * delta
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dl81w"]
+size = Vector2(44, 318)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5rgpn"]
+size = Vector2(44, 318)
+
+[node name="Area2D" type="Area2D"]
+process_mode = 1
+script = SubResource("GDScript_gf172")
+
+[node name="PipeGreen" type="Sprite2D" parent="."]
+position = Vector2(0, 420)
+texture = ExtResource("1_gf172")
+
+[node name="PipeGreen2" type="Sprite2D" parent="."]
+texture = ExtResource("1_gf172")
+flip_v = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_dl81w")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(0, 421)
+shape = SubResource("RectangleShape2D_5rgpn")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

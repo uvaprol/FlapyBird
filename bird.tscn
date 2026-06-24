@@ -88,10 +88,9 @@ animations = [{
 script = SubResource("GDScript_vox6r")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-process_mode = 4
 sprite_frames = SubResource("SpriteFrames_a7h38")
 animation = &"yellow_bird"
-frame_progress = 0.5194372
+frame_progress = 0.946003
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_81qbw")

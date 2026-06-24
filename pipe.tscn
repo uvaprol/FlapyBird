@@ -8,16 +8,23 @@ script/source = "extends Area2D
 const SPEED = 100.0
 var gate_key = true
 
+
 func _on_body_entered(_body: Node2D) -> void:
 	$'..'.game_over = true
 
 func _process(delta: float) -> void:
 	if position.x == -1000:
 		queue_free()
-	if position.x <= 0 and gate_key:
+	if position.x <= 130 and gate_key:
 		gate_key = false
 		$'..'.score += 1
-		print($'..'.score)
+		for i in $\"../HBoxContainer\".get_children():
+			$\"../HBoxContainer\".remove_child(i)
+		for i in str($'..'.score):
+			print(i)
+			var t = TextureRect.new()
+			t.texture = load(\"res://sprites/{0}.png\".format([i], '{_}'))
+			$\"../HBoxContainer\".add_child(t)
 	position.x -= SPEED * delta
 "
 

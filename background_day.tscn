@@ -14,7 +14,7 @@ func _process(delta: float) -> void:
 	if position.x == -125:
 		queue_free()
 	if position.x <= 127:
-		var background = load(\"res://background_day.tscn\").instantiate()
+		var background = preload(\"res://background_day.tscn\").instantiate()
 		background.position.y = 225.785
 		background.position.x = position.x + 249.0 - 127.0
 		$'..'.add_child(background)
